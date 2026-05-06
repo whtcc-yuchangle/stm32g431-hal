@@ -142,6 +142,15 @@ static void ai_page_run(void)
             {
                 ai_page_draw_icon(ai_icon_array, class_id);
                 LCD_SetDisplayWindow(239, 319, 240, 320);
+                led_single_set_state(class_id + 1, 1);
+            }
+            else if (class_id == 3)
+            {
+                led_single_set_state(4, 1);
+            }
+            else
+            {
+                led_all_off();
             }
 
             if (class_id <= 9)
