@@ -65,6 +65,18 @@ Defined in `Src/gpio.c`:
 
 `res/*.bmp` → `convert_bmp24to16.cpp` → `Src/logo.c` (`const unsigned char` arrays as RGB565). The converter runs as a standalone C++ program: `g++ convert_bmp24to16.cpp -o convert && ./convert res/xxx.bmp`. The output C array replaces or appends to `Src/logo.c`.
 
+### AI page (UART classification)
+
+`Src/page/ai_page.c` receives classification results from a host PC over USART1 interrupt at 9600 baud. Protocol: ASCII string `"class:N"` (7 bytes, N = 0–9 digit).
+
+| Class | Display |
+|-------|---------|
+| 0–2 | Fruit image (apple/banana/orange) + label |
+| 3 | Label only ("grape", no image) |
+| 9 | Label only ("unknown", no image) |
+
+**Display window caveat:** `LCD_SetDisplayWindow` restricts GRAM writes to a region. After any operation that sets a restricted window (icon drawing or area clearing), the window must be restored to full screen (`LCD_SetDisplayWindow(239, 319, 240, 320)`) before drawing labels or text at other positions — otherwise text outside the window region will not appear.
+
 ### printf caveat
 
 `fputc` in `Src/usart.c` calls `HAL_UART_Transmit` (blocking), so `printf` in interrupt/timer callbacks will cause hard faults or data corruption. Keep printf usage to main loop and page run functions only.

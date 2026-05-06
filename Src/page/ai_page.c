@@ -35,7 +35,14 @@ static t_ai_label g_ai_label[] = {
 static char g_fruit_cls_name[][AI_MAX_NAME_SIZE] = {
     "apple ",
     "banana",
-    "orange"
+    "orange",
+    "grape ",
+    "",
+    "",
+    "",
+    "",
+    "",
+    "unknown"
 };
 
 static t_icon ai_icon_array[] = {
@@ -115,18 +122,34 @@ static void ai_page_run(void)
             ai_uart_rx_flag = 0;
             
             sscanf(ai_uart_rx_buf, "class:%d", &class_id);
-            
-            ai_page_draw_icon(ai_icon_array, class_id);
-				
+
+            /* Clear previous icon area */
+            {
+                uint32_t i;
+                uint32_t icon_pixels = 60 * 90;
+                LCD_SetDisplayWindow(134, 205, 60, 90);
+                LCD_SetCursor(134, 205);
+                LCD_WriteRAM_Prepare();
+                for (i = 0; i < icon_pixels; i++)
+                {
+                    LCD_WriteRAM(White);
+                }
+            }
+
             LCD_SetDisplayWindow(239, 319, 240, 320);
-            
-            memset(g_ai_label[AI_LABEL_FRUIT_CLASS_INDEX].name, '\0', AI_MAX_NAME_SIZE);
-                
-            strncpy(g_ai_label[AI_LABEL_FRUIT_CLASS_INDEX].name, g_fruit_cls_name[class_id], 6);
-            
-            ai_page_draw_label(&g_ai_label[AI_LABEL_FRUIT_CLASS_INDEX]);
-            
-            LCD_SetDisplayWindow(239, 319, 240, 320);
+
+            if (class_id <= 2)
+            {
+                ai_page_draw_icon(ai_icon_array, class_id);
+                LCD_SetDisplayWindow(239, 319, 240, 320);
+            }
+
+            if (class_id <= 9)
+            {
+                memset(g_ai_label[AI_LABEL_FRUIT_CLASS_INDEX].name, '\0', AI_MAX_NAME_SIZE);
+                strncpy(g_ai_label[AI_LABEL_FRUIT_CLASS_INDEX].name, g_fruit_cls_name[class_id], 6);
+                ai_page_draw_label(&g_ai_label[AI_LABEL_FRUIT_CLASS_INDEX]);
+            }
             
             HAL_UART_Receive_IT(&huart1, (uint8_t *)ai_uart_rx_buf, 7);
         }

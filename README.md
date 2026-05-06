@@ -19,6 +19,7 @@ STM32G431RBTx (Cortex-M4, 128KB Flash / 32KB SRAM) embedded application for the 
 | Software I2C | Bit-banged PB6/PB7 for EEPROM & digital pot |
 | LCD | 240×320 TFT, 16-bit parallel interface |
 | USART | printf redirect at 9600 baud |
+| AI Classification | UART fruit recognition — displays image+label (apple/banana/orange) or label-only (grape/unknown) |
 
 ## Build
 
