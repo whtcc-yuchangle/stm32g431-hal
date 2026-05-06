@@ -1,0 +1,28 @@
+# Keil MDK build outputs
+*.o
+*.crf
+*.d
+*.dep
+*.axf
+*.hex
+*.htm
+*.map
+*.lnp
+*.build_log.htm
+*.lst
+
+# Keil IDE user settings
+*.uvoptx
+*.uvguix.*
+JLinkLog.txt
+JLinkSettings.ini
+
+# STM32CubeMX misc
+.mxproject
+
+# Claude Code local config
+.claude/
+
+# OS
+Thumbs.db
+Desktop.ini
